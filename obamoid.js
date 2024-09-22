@@ -6,56 +6,56 @@ gl = canvas.getContext('experimental-webgl');
 
 var vertices = [
     // Bottom
-    -1,-1,-1, 1,-1,-1, 1,-1,1, -1,-1,1,
+    -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1,
     // Right
-    -1,-1,-1, 1,-1,-1, 0,1,0,
+    -1, -1, -1, 1, -1, -1, 0, 1, 0,
     // Back
-    1,-1,-1, 1,-1,1, 0,1,0,
+    1, -1, -1, 1, -1, 1, 0, 1, 0,
     // Left
-    1,-1,1, -1,-1,1, 0,1,0,
+    1, -1, 1, -1, -1, 1, 0, 1, 0,
     // Front
-    -1,-1,1, -1,-1,-1, 0,1,0,
+    -1, -1, 1, -1, -1, -1, 0, 1, 0,
 ]
 
 var indices = [
     // Bottom
-    0,1,2, 0,2,3, 
+    0, 1, 2, 0, 2, 3,
     // Back
-    4,5,6,
+    4, 5, 6,
     // Left
-    7,8,9,
+    7, 8, 9,
     //Front
-    10,11,12,
+    10, 11, 12,
     //Right
-    13,14,15
+    13, 14, 15
 ];
 
 const textureCoordinates = [
     // Bottom
-    0.51,  0.49,
-    0.99,  0.49,
-    0.99,  0.01,
-    0.51,  0.01,
+    0.51, 0.49,
+    0.99, 0.49,
+    0.99, 0.01,
+    0.51, 0.01,
     // Back
-    0.49,  0.01,
-    0.01,  0.01,
-    0.25,  0.49,
+    0.49, 0.01,
+    0.01, 0.01,
+    0.25, 0.49,
     // Left
-    0.99,  0.51,
-    0.51,  0.51,
-    0.75,  0.99,
+    0.99, 0.51,
+    0.51, 0.51,
+    0.75, 0.99,
     // Front
-    0.49,  0.51,
-    0.01,  0.51,
-    0.25,  0.99,
+    0.49, 0.51,
+    0.01, 0.51,
+    0.25, 0.99,
     // Right
-    0.51,  0.51,
-    0.99,  0.51,
-    0.75,  0.99,
+    0.51, 0.51,
+    0.99, 0.51,
+    0.75, 0.99,
 ];
 
 // Create and store data into vertex buffer
-var vertexBuffer = gl.createBuffer ();
+var vertexBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
@@ -65,7 +65,7 @@ gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates), gl.STATIC_DRAW);
 
 // Create and store data into index buffer
-var indexBuffer = gl.createBuffer ();
+var indexBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
@@ -147,13 +147,13 @@ var uSamplerLocation = gl.getUniformLocation(shaderProgram, "uSampler");
 // Vertices
 gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 var vertexPosition = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false,0,0) ;
+gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(vertexPosition);
 
 // Texture
 gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
 var textureCoord = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-gl.vertexAttribPointer(textureCoord, 2, gl.FLOAT, false , 0, 0) ;
+gl.vertexAttribPointer(textureCoord, 2, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(textureCoord);
 
 // Bind texture
@@ -169,21 +169,21 @@ gl.useProgram(shaderProgram);
 //
 
 function get3DProjection(angle, width, height, zMin, zMax) {
-    var ang = Math.tan((angle*.5)*Math.PI/180);//angle*.5
+    var ang = Math.tan((angle * .5) * Math.PI / 180);//angle*.5
     var max = Math.max(width, height);
     return [
-        (0.5/ang)*(height/max), 0 , 0, 0,
-        0, (0.5/ang)*(width/max), 0, 0,
-        0, 0, -(zMax+zMin)/(zMax-zMin), -1,
-        0, 0, (-2*zMax*zMin)/(zMax-zMin), 0 
+        (0.5 / ang) * (height / max), 0, 0, 0,
+        0, (0.5 / ang) * (width / max), 0, 0,
+        0, 0, -(zMax + zMin) / (zMax - zMin), -1,
+        0, 0, (-2 * zMax * zMin) / (zMax - zMin), 0
     ];
 }
 
 function get2DProjection(width, height, depth, scale) {
     var max = Math.max(width, height);
     return [
-        scale*height/max, 0, 0, 0,
-        0, scale*width/max, 0, 0,
+        scale * height / max, 0, 0, 0,
+        0, scale * width / max, 0, 0,
         0, 0, -1 / depth, 0,
         0, 0, 0, 1,
     ];
@@ -193,15 +193,12 @@ function get2DProjection(width, height, depth, scale) {
 //var projectionMatrix = get2DProjection(canvas.width, canvas.height, 10, 0.5);
 var projectionMatrix = get3DProjection(40, canvas.width, canvas.height, 1, 10);
 
-var modelMatrix = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
-var viewMatrix = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
+var modelMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+var viewMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-// Translating Z
-viewMatrix[14] = viewMatrix[14]-3;
-
-// Moving the camera
-modelMatrix[13] = modelMatrix[13] + 0.3;
-//rotateX(viewMatrix, 0.3)
+// Changing camera orientation
+viewMatrix[14] = viewMatrix[14] - 3;
+viewMatrix[13] = viewMatrix[13] + 0.3;
 
 //  
 // Rotation 
@@ -212,13 +209,13 @@ function rotateZ(m, angle) {
     var s = Math.sin(angle);
     var mv0 = m[0], mv4 = m[4], mv8 = m[8];
 
-    m[0] = c*m[0]-s*m[1];
-    m[4] = c*m[4]-s*m[5];
-    m[8] = c*m[8]-s*m[9];
+    m[0] = c * m[0] - s * m[1];
+    m[4] = c * m[4] - s * m[5];
+    m[8] = c * m[8] - s * m[9];
 
-    m[1]=c*m[1]+s*mv0;
-    m[5]=c*m[5]+s*mv4;
-    m[9]=c*m[9]+s*mv8;
+    m[1] = c * m[1] + s * mv0;
+    m[5] = c * m[5] + s * mv4;
+    m[9] = c * m[9] + s * mv8;
 }
 
 
@@ -227,13 +224,13 @@ function rotateY(m, angle) {
     var s = Math.sin(angle);
     var mv0 = m[0], mv4 = m[4], mv8 = m[8];
 
-    m[0] = c*m[0]+s*m[2];
-    m[4] = c*m[4]+s*m[6];
-    m[8] = c*m[8]+s*m[10];
+    m[0] = c * m[0] + s * m[2];
+    m[4] = c * m[4] + s * m[6];
+    m[8] = c * m[8] + s * m[10];
 
-    m[2] = c*m[2]-s*mv0;
-    m[6] = c*m[6]-s*mv4;
-    m[10] = c*m[10]-s*mv8;
+    m[2] = c * m[2] - s * mv0;
+    m[6] = c * m[6] - s * mv4;
+    m[10] = c * m[10] - s * mv8;
 }
 
 function rotateX(m, angle) {
@@ -241,13 +238,13 @@ function rotateX(m, angle) {
     var s = Math.sin(angle);
     var mv1 = m[1], mv5 = m[5], mv9 = m[9];
 
-    m[1] = m[1]*c-m[2]*s;
-    m[5] = m[5]*c-m[6]*s;
-    m[9] = m[9]*c-m[10]*s;
+    m[1] = m[1] * c - m[2] * s;
+    m[5] = m[5] * c - m[6] * s;
+    m[9] = m[9] * c - m[10] * s;
 
-    m[2] = m[2]*c+mv1*s;
-    m[6] = m[6]*c+mv5*s;
-    m[10] = m[10]*c+mv9*s;
+    m[2] = m[2] * c + mv1 * s;
+    m[6] = m[6] * c + mv5 * s;
+    m[10] = m[10] * c + mv9 * s;
 }
 
 // Mouse rotation
@@ -262,6 +259,15 @@ let mouse = {
         x: 0,
         y: 0
     }
+}
+
+let speed = {
+    x: 0,
+    y: 1.5,
+    z: 0
+}
+
+function applyRotation(time) {
 }
 
 function mousedown(e) {
@@ -280,8 +286,8 @@ function mousemove(e) {
         mouse.offset.y = y - mouse.last.y;
         mouse.last.x = x;
         mouse.last.y = y;
-        rotateY(modelMatrix, mouse.offset.x * mouse.multiplier);
-        rotateX(modelMatrix, mouse.offset.y * mouse.multiplier);
+        speed.x += mouse.offset.y * mouse.multiplier;
+        speed.y += mouse.offset.x * mouse.multiplier;
     }
 }
 
@@ -315,16 +321,12 @@ var last = 0;
 //var random = [1,1,1];
 
 function loop(now) {
-    var time = now-last;
-    //lastRand += time;
-    //if (lastRand > 2000) {
-    //    random = [Math.random(), Math.random(), Math.random()];
-    //    lastRand = 0;
-    //}
-    //rotateX(modelMatrix, time*0.001*random[0]);
-    //rotateY(modelMatrix, time*0.001*random[1]);
-    //rotateZ(modelMatrix, time*0.001*random[2]);
-    rotateY(modelMatrix, time*0.001);
+    var time = (now - last) / 1000;
+
+    rotateX(modelMatrix, speed.x * time);
+    rotateY(modelMatrix, speed.y * time);
+    rotateZ(modelMatrix, speed.z * time);
+
     last = now;
 
     gl.clearColor(0.0, 0.0, 0.0, 0.0);

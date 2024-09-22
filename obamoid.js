@@ -267,9 +267,6 @@ let speed = {
     z: 0
 }
 
-function applyRotation(time) {
-}
-
 function mousedown(e) {
     mouse.pressed = true;
     mouse.offset.x = 0;
